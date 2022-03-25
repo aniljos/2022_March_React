@@ -27,6 +27,36 @@ function onStateChange(){
             console.log("sucessfull", responseJSON);
             var products = JSON.parse(responseJSON);
             console.log("Products", products);
+
+            //update the DOM
+            debugger;
+            var productsTBody = document.getElementById("productsTBody");
+            products.forEach(product => {
+                
+                var tr = document.createElement("tr");
+
+                var id_Td = document.createElement("td");
+                id_Td.appendChild(document.createTextNode(product.id));
+                tr.appendChild(id_Td);
+
+                var name_Td = document.createElement("td");
+                name_Td.appendChild(document.createTextNode(product.name));
+                tr.appendChild(name_Td);
+
+                var price_Td = document.createElement("td");
+                price_Td.appendChild(document.createTextNode(product.price));
+                tr.appendChild(price_Td);
+
+                var desc_Td = document.createElement("td");
+                desc_Td.appendChild(document.createTextNode(product.description));
+                tr.appendChild(desc_Td);
+
+                productsTBody.appendChild(tr);
+
+
+            });
+
+            
         }
         else{
             console.log("status", xhr.status);
