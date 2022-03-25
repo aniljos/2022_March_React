@@ -12,7 +12,11 @@
         <h3>New Product</h3>
     </header>
     <main>
-        <form>
+        <div id="errorMessagePanel">
+
+        </div>
+
+        <form id="productForm">
             <div>
                 <label for="idTxt">ID</label>
                 <input type="number" id="idTxt" placeholder="Enter your ID" required autofocus/>
@@ -36,7 +40,7 @@
 
             <div>
                 <button type="button" onclick="save();">Save</button>
-                <button>Clear</button>
+                <button type="reset">Clear</button>
             </div>
 
         </form>

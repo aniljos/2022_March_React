@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage</title>
+</head>
+<body>
+    <h2>Web Storage</h2>
+
+    <div>
+        <input id="msgTxt" placeholder="Enter a Message"/>
+    </div>
+    <div>
+        <button onclick="save()">Save</button>
+    </div>
+    <div>
+        <button onclick="fetch()">Fetch</button>
+    </div>
+    <h4 id="messagePanel">
+
+    </h4>
+
+    <script>
+
+        function save(){
+
+            var message = document.getElementById("msgTxt").value;
+            if(message){
+
+                //window.localStorage.setItem("message", message);
+                window.sessionStorage.setItem("message", message);
+                alert("Saved");
+            }
+        }
+
+        function fetch(){
+            //var msg = window.localStorage.getItem("message");
+            var msg = window.sessionStorage.getItem("message");
+            if(msg){
+                document.getElementById("messagePanel").innerHTML = msg;
+            }
+            else{
+                document.getElementById("messagePanel").innerHTML = "No message set";
+            }
+            
+        }
+
+    </script>
+</body>
+</html>
