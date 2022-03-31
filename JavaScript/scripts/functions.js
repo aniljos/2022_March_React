@@ -42,13 +42,13 @@ var obj = {
 
 
         setTimeout(function(){
-            console.log("ID after 2secs: ", this);
+            console.log("ID after 2secs: ", this.id);
         }, 2000);
 
         setTimeout(()=>{
 
            // var i = 10
-            console.log("ID after 2secs arrow fn: ", this);
+            console.log("ID after 2secs arrow fn: ", this.id);
         }, 2000);
     }
 
