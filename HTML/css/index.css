@@ -1,0 +1,83 @@
+/* header{
+    color: blue;
+    background-color: #e9ecef;
+    margin: 10px;
+    padding: 7px;
+} */
+
+/* ID Selector */
+#pageHeader{
+    color: #0f7fff;
+    background-color: #e9ecef;
+    margin: .625rem;
+    padding: .438rem;
+}
+
+/* Class Selector */
+.menu{
+    list-style: none;
+    background-color: rgb(31, 30, 29);
+    overflow: hidden;
+}
+
+/* Class Selector, direct child selector */
+.menu > li{
+    float: left;
+    padding: 1rem;
+    
+    
+}
+.menu > li > a{
+    text-decoration: none;
+    color: #fff;
+}
+.p3{
+    height: 6.25rem;
+    overflow: auto;
+}
+
+/* Element Selector */
+.button{
+    
+    padding: .75rem;
+    color: #fff;
+    background-color: #0e3055;
+    border: 1px solid #fff;
+    border-radius: .25rem;
+    box-shadow: .25rem .25rem lightblue;
+}
+
+.success{
+    background-color: #28a745;
+    box-shadow: .25rem .25rem lightgreen;
+}
+
+.warning{
+    background-color: #ffc107;
+    box-shadow: .25rem .25rem lightyellow;
+
+    
+}
+
+.thumbnail{
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 2px;
+    width: 150px;
+    
+}
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
+}
+
+
+
+
+
+
+
