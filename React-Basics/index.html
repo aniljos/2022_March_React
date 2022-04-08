@@ -15,6 +15,7 @@
     <div id="app2"></div>
     <div id="app3"></div>
     <div id="app4"></div>
+    
 
     <script type="text/babel">
             // <div id="div1" style="color: blue">Hello React</div>
@@ -30,7 +31,14 @@
             //JSX
             ReactDOM.render(<div><h4>Hello React JSX</h4></div>, document.getElementById("app3"));
 
+            //Component(UI)
+            function MyComponent(){
+                //return JSX
+                return <div><p>This is a React Component </p></div>
 
+            }
+
+            ReactDOM.render(<MyComponent/>, document.getElementById("app4"));
 
 
     </script>
