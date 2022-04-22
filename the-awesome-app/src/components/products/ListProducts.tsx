@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import axios from 'axios';
 import { Product } from '../../models/Product';
 import "./ListProducts.css";
+import EditProduct from './EditProduct';
 
 interface ListProductsProps{
 
@@ -10,16 +11,25 @@ interface ListProductsProps{
 interface ListProductsState{
     
     products: Array<Product>;
+    selectedProduct : Product | null;
 }
 
-class ListProducts extends Component<ListProductsProps, ListProductsState>{
+class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
 
     state: ListProductsState = {
-        products: []
+        products: [],
+        selectedProduct : null
+    }
+
+    constructor(props: ListProductsProps){
+        super(props);
+
+        console.log("[ListProducts] constructor");
     }
 
     async componentDidMount(){
 
+        console.log("[ListProducts] componentDidMount");
         const url = "http://localhost:9000/products";
         // var promise = axios.get(url);
         // //promise.then(successCallback, errorCallback)
@@ -36,7 +46,7 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
         try {
             //response resolved from the promise(success)
             const response = await axios.get<Array<Product>>(url);
-            console.log("success", response);
+            //console.log("success", response);
             const allProducts = response.data;
             this.setState({
                 products: allProducts
@@ -75,6 +85,12 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
         }
     }
 
+    editProduct = (product: Product, index: number)=>{
+        this.setState({
+            selectedProduct: product
+        });
+    }
+
     renderProducts(){
 
         const result =  this.state.products.map((item, index)=> {
@@ -88,7 +104,7 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
                     <div>
                         <button onClick={() => {this.deleteProduct(item, index)}}>Delete</button>&nbsp;
                         {/* <button onClick={this.deleteProduct.bind(this, item, index)}>Delete</button>&nbsp; */}
-                        <button>Edit</button>
+                        <button onClick={() => this.editProduct(item , index)}>Edit</button>
                     </div>
                 </div>
 
@@ -99,15 +115,49 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
     }
 
     render(): React.ReactNode {
+
+        console.log("[ListProducts] render");
         return (
             <div>
                 <h3>List Products</h3>
                 <div style={{display: 'flex', flexFlow: 'row wrap', justifyContent: 'center'}}>
                     {this.renderProducts()}
                 </div>
+
+                <div>
+                  {this.state.selectedProduct ? 
+                        <EditProduct key={this.state.selectedProduct.id} product={this.state.selectedProduct}/> : null}
+                </div>
+                <br/><br/><br/><br/><br/><br/>
             </div>
         )
     }
+
+    componentWillMount(){
+        console.log("[ListProducts] componentWillMount");
+    }
+
+    //update
+    componentWillReceiveProps(){
+        console.log("[ListProducts] componentWillReceiveProps");
+    }
+    // shouldComponentUpdate(nextProps: ListProductsProps, nextState: ListProductsState){
+    //     console.log("[ListProducts] shouldComponentUpdate");
+    //     return true;
+    // }
+    componentWillUpdate(){
+        console.log("[ListProducts] componentWillUpdate");
+    }
+    //render(){}
+    componentDidUpdate(){
+        console.log("[ListProducts] componentDidUpdate");
+    }
+
+    //unmount
+    componentWillUnmount(){
+        console.log("[ListProducts] componentWillUnmount");
+    }
+
 }
 
 export default ListProducts;
