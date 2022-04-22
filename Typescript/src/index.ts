@@ -36,3 +36,16 @@ class Test{};
 
 var test: Test;
 
+
+
+const numbers = [1,2,3,4,5,6,7,8];
+
+console.log("numbers", numbers);
+
+const square_of_numbers = numbers.map((item, index) => {
+    return item * item;
+});
+
+console.log("square_of_numbers", square_of_numbers);
+
+
