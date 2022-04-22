@@ -1,14 +1,23 @@
-import React, { Component } from "react";
+import React, { ChangeEvent, Component } from "react";
 
-class Counter extends Component {
+interface CounterProps{
+  title : string
+}
+
+interface CounterState{
+  count: number
+}
+
+
+class Counter extends Component<CounterProps, CounterState> {
   // state should be considered to be immutable
-  state = {
+  state : CounterState = {
     count: 5,
   };
 
-  inputRef = React.createRef(null);
+  inputRef = React.createRef<HTMLInputElement>();
 
-  constructor(props) {
+  constructor(props: CounterProps) {
     super(props);
 
     // takes care of the "this" reference
@@ -48,7 +57,7 @@ class Counter extends Component {
     );
   }
 
-  change = (evt) => {
+  change = (evt : ChangeEvent<HTMLInputElement>) => {
     console.log(evt);
     //evt.target ==> input field
     const value = evt.target.value;
@@ -59,8 +68,14 @@ class Counter extends Component {
 
   update = () => {
     console.log("inputref", this.inputRef);
-    console.log("value", this.inputRef.current.value);
-    const value = this.inputRef.current.value;
+    
+    // if(this.inputRef.current !== null){
+    //   console.log("value", this.inputRef.current.value);
+    // }
+    
+    console.log("value", this.inputRef.current!.value);
+    const value = this.inputRef.current!.value;
+    
     if (value) {
       this.setState({
         count: parseInt(value),
