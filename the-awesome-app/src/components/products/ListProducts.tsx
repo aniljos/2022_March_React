@@ -23,7 +23,6 @@ class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
 
     constructor(props: ListProductsProps){
         super(props);
-
         console.log("[ListProducts] constructor");
     }
 
@@ -91,6 +90,36 @@ class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
         });
     }
 
+    editCancel = (message: string)=> {
+        this.setState({
+            selectedProduct: null
+        });
+        alert(message);
+    }
+
+    editUpdate = async (updatedProduct: Product) => {
+        console.log("ListProducts updatedProduct", updatedProduct);
+
+        const url = "http://localhost:9000/products/" + updatedProduct.id;
+        try {
+            
+            const response = await axios.put(url, updatedProduct);
+            const products = [...this.state.products];
+            const index = products.findIndex(item => item.id === updatedProduct.id);
+            if(index !== -1){
+                products[index] = updatedProduct;
+
+                this.setState({
+                    products
+                });
+            }
+            alert("Updated the product" + updatedProduct.id)
+
+        } catch (error) {
+            alert("Failed to Update the product" + updatedProduct.id)
+        }
+    }
+
     renderProducts(){
 
         const result =  this.state.products.map((item, index)=> {
@@ -126,7 +155,11 @@ class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
 
                 <div>
                   {this.state.selectedProduct ? 
-                        <EditProduct key={this.state.selectedProduct.id} product={this.state.selectedProduct}/> : null}
+                        <EditProduct 
+                            key={this.state.selectedProduct.id} 
+                            product={this.state.selectedProduct}
+                            onCancel={this.editCancel}
+                            onSave={this.editUpdate}/> : null}
                 </div>
                 <br/><br/><br/><br/><br/><br/>
             </div>

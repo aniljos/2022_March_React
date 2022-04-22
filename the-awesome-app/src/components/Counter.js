@@ -10,7 +10,7 @@ class Counter extends Component {
 
   constructor(props) {
     super(props);
-
+    
     // takes care of the "this" reference
     this.decr = this.decr.bind(this);
   }
