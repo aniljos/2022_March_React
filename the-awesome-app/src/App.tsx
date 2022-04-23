@@ -10,6 +10,7 @@ import Login from "./components/auth/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Link, Routes, Route, Navigate } from "react-router-dom";
 import HooksDemo from "./components/HooksDemo";
+import GadgetStore from "./components/gadgets/GadgetStore";
 
 
 function App() {
@@ -42,6 +43,12 @@ function App() {
                 <Link className="nav-link" to="/hooks">Hooks</Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/gadgets">Gadgets Store</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/gadgets-cart">View Cart</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/login">Login</Link>
               </li>
             </ul>
@@ -56,6 +63,7 @@ function App() {
             <Route path="/products"  element={<ListProducts/>} />
             <Route path="/login"  element={<Login/>} />
             <Route path="/hooks"  element={<HooksDemo/>} />
+            <Route path="/gadgets"  element={<GadgetStore/>} />
             <Route path="*"  element={<Navigate to='/home'/>} />
           </Routes>
         </section>

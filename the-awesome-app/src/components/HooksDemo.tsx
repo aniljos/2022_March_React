@@ -1,15 +1,32 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 interface SimpleProps{
     ctr: number,
     onUpdate: (v: number) => void
 }
 
+interface SimpleType{
+    message: string,
+    execute: () => void
+}
+
 
 //React.memo => 16.3 => rerender the component only if the props or state changes
-const Simple = React.memo((props: {ctr: number, onUpdate:(value: number) => void }) => {
+//React.forwardRef ==> to get a reference to a functional component
 
-    console.log("rendering simple component")
+const Simple = React.memo(React.forwardRef((props: {ctr: number, onUpdate:(value: number) => void }, ref) => {
+
+    console.log("rendering simple component");
+
+    useImperativeHandle(ref, () => {
+        return {
+            message: "Hello Simple Component",
+            execute: () => {
+                alert("in execute of simple...")
+            }
+        }
+    })
+
     return (
         <div>
             <h4>Simple Component</h4>
@@ -22,7 +39,7 @@ const Simple = React.memo((props: {ctr: number, onUpdate:(value: number) => void
             </div>
         </div>
     )   
-});
+}));
 
 
 
@@ -31,7 +48,7 @@ function HooksDemo(){
     //console.log("rendering HooksDemo");
     const [count, setCount] = useState(10);
     const [message, setMessage] = useState("Hooks")
-
+    const simpleRef = useRef<SimpleType>(null);
    
     // useCallback(callback, [dependencies]);
     const updateCount = useCallback( (value: number)=>{
@@ -69,7 +86,10 @@ function HooksDemo(){
     // }, [message, count])
 
 
-    
+    function invokeSimpleFn(){
+        console.log("simpleRef", simpleRef)
+        simpleRef.current?.execute();
+    }
 
 
     return (
@@ -87,8 +107,14 @@ function HooksDemo(){
                 <input className='form-control' value={message} onChange={(e) => setMessage(e.target.value)}/>
             </div>
             <br/>
+            <button className='btn btn-danger' 
+                        onClick={invokeSimpleFn}>Parent: Execute method on Simple Component</button>
 
-            <Simple ctr={count} onUpdate={updateCount}/>
+            <br/>
+            <Simple ref={simpleRef} ctr={count} onUpdate={updateCount}/>
+
+           
+            
         </div>
     )
 }
