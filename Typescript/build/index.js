@@ -31,3 +31,8 @@ const square_of_numbers = numbers.map((item, index) => {
     return item * item;
 });
 console.log("square_of_numbers", square_of_numbers);
+// var arr1 = numbers[0];
+// var arr2 = numbers[1];
+var [arr1, arr2] = numbers;
+console.log(arr1, arr2);
+arr1 = 10;

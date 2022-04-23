@@ -86,6 +86,10 @@ class EditProduct extends Component<EditProductProps, EditProductState> {
     }
   };
 
+  invoke(){
+    alert("Updating product: " + this.state.currentProduct?.name);
+  }
+
   render(): React.ReactNode {
     //destucturing
     const { currentProduct } = this.state;

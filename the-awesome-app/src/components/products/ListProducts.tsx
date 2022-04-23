@@ -21,6 +21,8 @@ class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
         selectedProduct : null
     }
 
+    editProductRef = React.createRef<EditProduct>();
+
     constructor(props: ListProductsProps){
         super(props);
         console.log("[ListProducts] constructor");
@@ -156,10 +158,19 @@ class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
                 <div>
                   {this.state.selectedProduct ? 
                         <EditProduct 
+                            ref={this.editProductRef}
                             key={this.state.selectedProduct.id} 
                             product={this.state.selectedProduct}
                             onCancel={this.editCancel}
                             onSave={this.editUpdate}/> : null}
+                </div>
+                <div>
+                    {this.state.selectedProduct ? 
+                        <button onClick={()=> {
+                            console.log(this.editProductRef); 
+                            this.editProductRef.current?.invoke();
+                        }}>View EditProduct Ref</button> 
+                        : null}
                 </div>
                 <br/><br/><br/><br/><br/><br/>
             </div>
