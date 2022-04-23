@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 // state = {
 //     name: "",
 //     password: ""
@@ -17,6 +18,7 @@ function Login(){
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     function handleNameChange(evt: ChangeEvent<HTMLInputElement>){
         setName(evt.target.value);
@@ -29,7 +31,9 @@ function Login(){
         try {
             const url = "http://localhost:9000/login";
             const response = await axios.post(url, {name, password});
-            setMessage("Authenticated Successfully");
+            setMessage("");
+            navigate("/products");
+
 
         } catch (error) {
             setMessage("Invalid Credentials");
@@ -41,20 +45,21 @@ function Login(){
         <div>
             <h3>Login</h3>
 
-            <div>
+            <div className='alert alert-danger'>
                 {message}
             </div>
-            <div>
+            <div className='form-group'>
                 <label htmlFor='name'>Name</label>
-                <input id="name" value={name} onChange={handleNameChange}/>
+                <input className='form-control' id="name" value={name} onChange={handleNameChange}/>
             </div>
-            <div>
+            <div className='form-group'>
                 <label htmlFor='pwd'>Password</label>
-                <input id="pwd" type="password" value={password} 
+                <input className='form-control' id="pwd" type="password" value={password} 
                             onChange={(e) => setPassword(e.target.value) }/>
             </div>
+            <br/>
             <div>
-                <button onClick={login}>Login</button>
+                <button className='btn btn-primary' onClick={login}>Login</button>
             </div>
         </div>
     )
