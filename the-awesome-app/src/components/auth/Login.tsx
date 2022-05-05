@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../redux/store';
 // state = {
 //     name: "",
 //     password: ""
@@ -19,6 +21,10 @@ function Login(){
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const dispatch  = useDispatch<AppDispatch>();
+    const location = useLocation();
+
+    console.log("Login", location);
 
     function handleNameChange(evt: ChangeEvent<HTMLInputElement>){
         setName(evt.target.value);
@@ -32,11 +38,39 @@ function Login(){
             const url = "http://localhost:9000/login";
             const response = await axios.post(url, {name, password});
             setMessage("");
-            navigate("/products");
+            dispatch({
+                type: "SET_AUTH",
+                payload: {
+                    isAuthenticated: true,
+                    userName: name,
+                    accessToken: response.data.accessToken,
+                    refreshToken: response.data.refreshToken
+                }
+            });
 
+            if(location.state){
 
+                //const to:any = location.state;
+                navigate((location.state as any).redirectUrl);
+            }
+            else{
+                navigate("/home");
+            }
+            
+        
+        
         } catch (error) {
             setMessage("Invalid Credentials");
+
+            dispatch({
+                type: "SET_AUTH",
+                payload: {
+                    isAuthenticated: false,
+                    userName: "",
+                    accessToken: "",
+                    refreshToken: "",
+                }
+            });
         }
 
     }
@@ -45,9 +79,9 @@ function Login(){
         <div>
             <h3>Login</h3>
 
-            <div className='alert alert-danger'>
+            {message ?<div className='alert alert-danger'>
                 {message}
-            </div>
+            </div> : null}
             <div className='form-group'>
                 <label htmlFor='name'>Name</label>
                 <input className='form-control' id="name" value={name} onChange={handleNameChange}/>

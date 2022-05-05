@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Product } from '../../models/Product';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { CartItem } from '../../models/CartItem';
+import { createAddToCartAction } from '../../redux/actionCreators';
 
 function GadgetStore(){
 
     const [products, setProducts]= useState<Array<Product>>([]);
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect( () =>{
         fetchProducts();
@@ -27,6 +32,15 @@ function GadgetStore(){
         }
     }
 
+    function addToCart(product: Product){
+
+        // dispatch({
+        //     type: "ADDTOCART",
+        //     cartItem: new CartItem(product, 1)
+        // })
+        dispatch(createAddToCartAction(new CartItem(product, 1)));
+    }
+
     function renderProducts() {
 
         const productsView =  products.map((item, index) => {
@@ -37,7 +51,7 @@ function GadgetStore(){
                             <h5 className="card-title">{item.name}</h5>
                             <p className="card-text">{item.description}</p>
                             <p className="card-text text-primary">INR {item.price}</p>
-                            <button className="btn btn-primary">Add To Cart</button>
+                            <button className="btn btn-primary" onClick={() => addToCart(item)}>Add To Cart</button>
                         </div>
                     </div>
                 </div>

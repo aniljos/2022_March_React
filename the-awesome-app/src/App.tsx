@@ -11,6 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Link, Routes, Route, Navigate } from "react-router-dom";
 import HooksDemo from "./components/HooksDemo";
 import GadgetStore from "./components/gadgets/GadgetStore";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ViewCart from "./components/gadgets/ViewCart";
 
 
 function App() {
@@ -60,10 +62,11 @@ function App() {
           <Routes>
             <Route path="/home"  element={<Hello title="React"/>} />
             <Route path="/counter"  element={<TypedCounter title="Counter"/>} />
-            <Route path="/products"  element={<ListProducts/>} />
+            <Route path="/products"  element={<ProtectedRoute> <ListProducts/></ProtectedRoute>} />
             <Route path="/login"  element={<Login/>} />
-            <Route path="/hooks"  element={<HooksDemo/>} />
+            <Route path="/hooks"  element={<ProtectedRoute> <HooksDemo/></ProtectedRoute>} />
             <Route path="/gadgets"  element={<GadgetStore/>} />
+            <Route path="/gadgets-cart"  element={<ViewCart/>} />
             <Route path="*"  element={<Navigate to='/home'/>} />
           </Routes>
         </section>
