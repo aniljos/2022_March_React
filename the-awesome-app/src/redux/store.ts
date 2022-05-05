@@ -2,6 +2,7 @@ import { logMiddleware } from './logMiddleware';
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import { authReducer } from './authReducer';
 import {gadgetsReducer} from './gadgetsReducer';
+import thunk from 'redux-thunk';
 
 
 // export const store = createStore(combineReducers({auth: authReducer, gadgets: gadgetsReducer}), 
@@ -15,7 +16,7 @@ import {gadgetsReducer} from './gadgetsReducer';
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(
         combineReducers({auth: authReducer, gadgets: gadgetsReducer}), 
-        composeEnhancers( applyMiddleware(logMiddleware)));
+        composeEnhancers( applyMiddleware(logMiddleware, thunk)));
 
 
 export type AppState = ReturnType<typeof store.getState>;

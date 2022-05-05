@@ -1,11 +1,16 @@
 import { CartItem } from "../models/CartItem";
+import { Product } from "../models/Product";
 
 export interface GadgetStoreState{
-    cart : Array<CartItem>
+    cart : Array<CartItem>,
+    products: Array<Product>,
+    isProductsLoaded: boolean
 }
 
 const gadgetStoreState : GadgetStoreState = {
-    cart: []
+    cart: [],
+    products: [],
+    isProductsLoaded: false
 };
 
 // Action for ADDTOCART or REMOVEFROMCART
@@ -13,10 +18,12 @@ export interface GadgetStoreAction{
 
     type: string;
     cartItem?: CartItem;
-    productId?: number
+    productId?: number,
+    products?: Array<Product>
 }
 
-export const gadgetsReducer = (state: GadgetStoreState=gadgetStoreState, action: GadgetStoreAction) => {
+export const gadgetsReducer = 
+        (state: GadgetStoreState=gadgetStoreState, action: GadgetStoreAction): GadgetStoreState => {
 
     //return the update state
     if(action.type === "ADDTOCART"){
@@ -50,6 +57,19 @@ export const gadgetsReducer = (state: GadgetStoreState=gadgetStoreState, action:
                 return state;
             }
         }
+    }
+
+    if(action.type === "SAVEPRODUCTS"){
+
+        if(action.products){
+            return {
+
+                ...state,
+                products: action.products,
+                isProductsLoaded: true
+            }
+        }
+        
     }
 
     return state;

@@ -1,36 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Product } from '../../models/Product';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../redux/store';
 import { CartItem } from '../../models/CartItem';
-import { createAddToCartAction } from '../../redux/actionCreators';
+import { createAddToCartAction, createSaveProductsAction } from '../../redux/actionCreators';
+import { ThunkDispatch } from 'redux-thunk';
+import { GadgetStoreAction } from '../../redux/gadgetsReducer';
+
+type AppThunkDispatch = ThunkDispatch<AppState, any, GadgetStoreAction>
 
 function GadgetStore(){
 
-    const [products, setProducts]= useState<Array<Product>>([]);
+    //const [products, setProducts]= useState<Array<Product>>([]);
+
+    const products = useSelector((state: AppState) => state.gadgets.products);
+    const isProductsLoaded = useSelector((state: AppState) => state.gadgets.isProductsLoaded);
+
     const dispatch = useDispatch<AppDispatch>();
+    const thunkDispatch = useDispatch<AppThunkDispatch>()
 
     useEffect( () =>{
-        fetchProducts();
-        
+        //fetchProducts();
+        if(isProductsLoaded===false){
+            fetchProductsAndSaveToRedux();
+        }
     }, []);
 
-    async function fetchProducts(){
+    function fetchProductsAndSaveToRedux(){
 
-        const url = process.env.REACT_APP_PRODUCTS_URL;
-        if(url){
-
-            try {
-                const response = await axios.get<Array<Product>>(url);
-                setProducts(response.data);
-
-            } catch (error) {
-                console.log("error", error);
-            }
-            
-        }
+        thunkDispatch(createSaveProductsAction())
     }
+
+    // async function fetchProducts(){
+
+    //     const url = process.env.REACT_APP_PRODUCTS_URL;
+    //     if(url){
+
+    //         try {
+    //             const response = await axios.get<Array<Product>>(url);
+    //             setProducts(response.data);
+
+    //         } catch (error) {
+    //             console.log("error", error);
+    //         }
+            
+    //     }
+    // }
 
     function addToCart(product: Product){
 
