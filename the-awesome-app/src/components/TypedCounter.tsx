@@ -1,4 +1,5 @@
 import React, { ChangeEvent, Component } from "react";
+import {withBorder} from '../components/hoc/withBorder';
 
 interface CounterProps{
   title : string
@@ -113,4 +114,4 @@ class Counter extends Component<CounterProps, CounterState> {
   }
 }
 
-export default Counter;
+export default withBorder(Counter);

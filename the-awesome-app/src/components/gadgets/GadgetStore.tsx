@@ -7,6 +7,7 @@ import { CartItem } from '../../models/CartItem';
 import { createAddToCartAction, createSaveProductsAction } from '../../redux/actionCreators';
 import { ThunkDispatch } from 'redux-thunk';
 import { GadgetStoreAction } from '../../redux/gadgetsReducer';
+import { withBorder } from '../hoc/withBorder';
 
 type AppThunkDispatch = ThunkDispatch<AppState, any, GadgetStoreAction>
 
@@ -88,4 +89,4 @@ function GadgetStore(){
     )
 }
 
-export default GadgetStore;
+export default withBorder(GadgetStore);

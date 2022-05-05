@@ -6,19 +6,22 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { AppThemeContext, ThemeState } from "./context/AppThemeContext";
+import AppThemeProvider from "./context/AppThemeProvider";
+import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
 
-const theme: ThemeState={
-  mode: 'light'
-}
-
+const theme: ThemeState = {
+  mode: "light",
+};
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppThemeContext.Provider value={theme}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </AppThemeContext.Provider>
+    <AppErrorBoundary>
+      <AppThemeProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </AppThemeProvider>
+    </AppErrorBoundary>
   </React.StrictMode>,
   document.getElementById("root")
 );

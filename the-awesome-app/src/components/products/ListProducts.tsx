@@ -14,7 +14,7 @@ interface ListProductsState{
     selectedProduct : Product | null;
 }
 
-class ListProducts extends PureComponent<ListProductsProps, ListProductsState>{
+class ListProducts extends Component<ListProductsProps, ListProductsState>{
 
     state: ListProductsState = {
         products: [],
