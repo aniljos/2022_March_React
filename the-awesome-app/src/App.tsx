@@ -1,10 +1,10 @@
-import React from "react";
+import React, {Suspense} from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Hello from "./components/Hello";
 import Counter from "./components/Counter";
 import TypedCounter from "./components/TypedCounter";
-import ListProducts from './components/products/ListProducts';
+
 //import ViewProducts from "./components/products/ListProducts";
 import Login from "./components/auth/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,6 +16,11 @@ import ViewCart from "./components/gadgets/ViewCart";
 import Header from "./components/Header";
 import ErrorBoundaryDemo from "./components/ErrorBoundaryDemo";
 
+//static 
+//import ListProducts from './components/products/ListProducts';
+
+//dynamic--code-splitting
+const ListProducts = React.lazy(() => import('./components/products/ListProducts'));
 
 function App() {
   return (
@@ -26,6 +31,8 @@ function App() {
 
         <section>
           {/* Views */}
+
+          <Suspense fallback="Loading...">
           <Routes>
             <Route path="/home"  element={<Hello title="React"/>} />
             <Route path="/counter"  element={<TypedCounter title="Counter"/>} />
@@ -37,6 +44,7 @@ function App() {
             <Route path="/error"  element={<ErrorBoundaryDemo/>} />
             <Route path="*"  element={<Navigate to='/home'/>} />
           </Routes>
+          </Suspense>
         </section>
       </div>
     </Router>

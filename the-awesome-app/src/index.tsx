@@ -8,6 +8,7 @@ import { store } from "./redux/store";
 import { AppThemeContext, ThemeState } from "./context/AppThemeContext";
 import AppThemeProvider from "./context/AppThemeProvider";
 import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
+import MuiApp from "./MuiApp";
 
 const theme: ThemeState = {
   mode: "light",
@@ -18,7 +19,8 @@ ReactDOM.render(
     <AppErrorBoundary>
       <AppThemeProvider>
         <Provider store={store}>
-          <App />
+          {/* <App /> */}
+          <MuiApp/>
         </Provider>
       </AppThemeProvider>
     </AppErrorBoundary>
