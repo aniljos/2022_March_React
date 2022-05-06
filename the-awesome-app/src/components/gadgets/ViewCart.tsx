@@ -33,7 +33,9 @@ function ViewCart(){
      return (
         <div>
             <h3>Cart</h3>
-
+            {cart.length === 0 ?<div className='alert alert-secondary'>
+                No Items in the cart.
+            </div> : null}
             <div className="row row-cols-1 row-cols-md-2 g-4">
                 {cart.map((item, index) => {
                     return (

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { Suspense, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,80 +15,133 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import {appRoutes, AppRoute} from './routes/routes';
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Grid } from "@mui/material";
 
-function MuiApp() {
+interface MenuLisProps{
+  onNavigate : () => void;
+}
 
-    const [openDrawer, setOpenDrawer] = useState(false);
+function MenuList(props: {onNavigate : () => void}) {
 
-    function closeDrawer(){
-        setOpenDrawer(false);
-    }
+  const navigate = useNavigate();
 
-    
-
-
+  function navigateTo(route : AppRoute){
+      navigate(route.path);
+      props.onNavigate();
+  }
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => setOpenDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              React Training
-            </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          sx={{
-            width: 240,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
+    <List>
+      {appRoutes.filter(item => item.menu).map((item, index) =>{ 
+        
+        const Icon = item.icon;
+        return (
+            <ListItem button key={item.id} onClick={() => navigateTo(item)}>
+              <ListItemIcon>
+                <Icon/>
+              </ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItem>
+          )
+      })}
+    </List>
+  );
+}
+
+function MuiApp() {
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  function closeDrawer() {
+    setOpenDrawer(false);
+  }
+
+  return (
+
+    <Router>
+      <div>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={() => setOpenDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                React Training
+              </Typography>
+              <Button color="inherit">Login</Button>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            sx={{
               width: 240,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="temporary"
-          anchor="left"
-          open={openDrawer}
-          onClose={closeDrawer}
-        >
-          <Toolbar />
-          <Divider />
-          <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      </Box>
-    </div>
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: 240,
+                boxSizing: "border-box",
+              },
+            }}
+            variant="temporary"
+            anchor="left"
+            open={openDrawer}
+            onClose={closeDrawer}
+          >
+            <Toolbar />
+            <Divider />
+                <MenuList onNavigate={closeDrawer}/>
+            <Divider />
+            <List>
+              {["All mail", "Trash", "Spam"].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+        </Box>
+
+        <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <AppErrorBoundary>
+                      <Suspense fallback="Loading">
+                        <Routes>
+                            {appRoutes.map((item , index) => {
+
+                                const Component = item.component;
+                                if(item.secure){
+                                  return <Route key={item.id} path={item.path}  
+                                      element={<ProtectedRoute> <Component/></ProtectedRoute>} />
+                                }
+                                else{
+                                  return <Route key={item.id} path={item.path}  
+                                      element={<Component/>} />
+                                }
+
+                            })}
+
+                        </Routes>
+                      </Suspense>
+                  </AppErrorBoundary>    
+                </Grid>
+        </Grid>
+
+        
+      </div>
+    </Router>
   );
 }
 

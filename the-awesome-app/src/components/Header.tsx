@@ -51,6 +51,9 @@ const Header = React.memo(() => {
               <Link className="nav-link" to="/gadgets-cart">View Cart</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/customers">Customers</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/error">Error Boundary</Link>
             </li>
             <li className="nav-item">

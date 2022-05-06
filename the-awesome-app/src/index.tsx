@@ -10,6 +10,7 @@ import AppThemeProvider from "./context/AppThemeProvider";
 import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
 import MuiApp from "./MuiApp";
 
+
 const theme: ThemeState = {
   mode: "light",
 };

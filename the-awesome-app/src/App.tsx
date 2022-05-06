@@ -15,6 +15,8 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ViewCart from "./components/gadgets/ViewCart";
 import Header from "./components/Header";
 import ErrorBoundaryDemo from "./components/ErrorBoundaryDemo";
+import ListCustomers from "./components/customers/ListCustomers";
+import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
 
 //static 
 //import ListProducts from './components/products/ListProducts';
@@ -31,20 +33,22 @@ function App() {
 
         <section>
           {/* Views */}
-
-          <Suspense fallback="Loading...">
-          <Routes>
-            <Route path="/home"  element={<Hello title="React"/>} />
-            <Route path="/counter"  element={<TypedCounter title="Counter"/>} />
-            <Route path="/products"  element={<ListProducts/>} />
-            <Route path="/login"  element={<Login/>} />
-            <Route path="/hooks"  element={<ProtectedRoute> <HooksDemo/></ProtectedRoute>} />
-            <Route path="/gadgets"  element={<GadgetStore/>} />
-            <Route path="/gadgets-cart"  element={<ViewCart/>} />
-            <Route path="/error"  element={<ErrorBoundaryDemo/>} />
-            <Route path="*"  element={<Navigate to='/home'/>} />
-          </Routes>
-          </Suspense>
+          <AppErrorBoundary>
+              <Suspense fallback="Loading...">
+              <Routes>
+                <Route path="/home"  element={<Hello title="React"/>} />
+                <Route path="/counter"  element={<TypedCounter title="Counter"/>} />
+                <Route path="/products"  element={<ListProducts/>} />
+                <Route path="/login"  element={<Login/>} />
+                <Route path="/hooks"  element={<ProtectedRoute> <HooksDemo/></ProtectedRoute>} />
+                <Route path="/gadgets"  element={<GadgetStore/>} />
+                <Route path="/gadgets-cart"  element={<ViewCart/>} />
+                <Route path="/error"  element={<ErrorBoundaryDemo/>} />
+                <Route path="/customers"  element={<ListCustomers/>} />
+                <Route path="*"  element={<Navigate to='/home'/>} />
+              </Routes>
+              </Suspense>
+          </AppErrorBoundary>
         </section>
       </div>
     </Router>
