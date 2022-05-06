@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 
 class AppErrorBoundary extends PureComponent{
 
@@ -13,6 +14,10 @@ class AppErrorBoundary extends PureComponent{
         }
     }
 
+    reload = () => {
+        this.setState({hasError: false});
+    }
+
     render(): React.ReactNode {
         
         if(this.state.hasError){
@@ -20,6 +25,7 @@ class AppErrorBoundary extends PureComponent{
             return(
                 <div className='alert alert-danger'>
                     Something went wrong. Please try later...
+                    <Link to="/home" onClick={this.reload}>Reload</Link>
                 </div>
             )
         }

@@ -4,7 +4,7 @@ import { AppThemeContext } from '../context/AppThemeContext';
 import ThemeSwitcherButton from '../context/ThemeSwitcherButton';
 
 
-const Header = React.memo(() => {
+const Header = React.memo((props: any) => {
 
     const themeContext = useContext(AppThemeContext);
 
@@ -61,6 +61,9 @@ const Header = React.memo(() => {
             </li>
             <li className="nav-item">
               <ThemeSwitcherButton/>
+            </li>
+            <li className="nav-item">
+              <button className='btn btn-secondary' onClick={props.onChangeMode}>Material UI</button>
             </li>
           </ul>
         </div>

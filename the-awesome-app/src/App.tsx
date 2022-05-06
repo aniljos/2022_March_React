@@ -24,12 +24,12 @@ import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
 //dynamic--code-splitting
 const ListProducts = React.lazy(() => import('./components/products/ListProducts'));
 
-function App() {
+function App(props: any) {
   return (
     <Router>
       <div className="container">
 
-        <Header/>
+        <Header onChangeMode={props.onChangeMode}/>
 
         <section>
           {/* Views */}

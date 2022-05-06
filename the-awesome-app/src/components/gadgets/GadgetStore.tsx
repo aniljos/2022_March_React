@@ -8,6 +8,7 @@ import { createAddToCartAction, createSaveProductsAction } from '../../redux/act
 import { ThunkDispatch } from 'redux-thunk';
 import { GadgetStoreAction } from '../../redux/gadgetsReducer';
 import { withBorder } from '../hoc/withBorder';
+import { Alert, Snackbar } from '@mui/material';
 
 type AppThunkDispatch = ThunkDispatch<AppState, any, GadgetStoreAction>
 
@@ -17,6 +18,8 @@ function GadgetStore(){
 
     const products = useSelector((state: AppState) => state.gadgets.products);
     const isProductsLoaded = useSelector((state: AppState) => state.gadgets.isProductsLoaded);
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const dispatch = useDispatch<AppDispatch>();
     const thunkDispatch = useDispatch<AppThunkDispatch>()
@@ -28,6 +31,10 @@ function GadgetStore(){
         }
     }, []);
 
+
+    function handleSnackbarClose(){
+        setOpenSnackbar(false);
+    }
     function fetchProductsAndSaveToRedux(){
 
         thunkDispatch(createSaveProductsAction())
@@ -56,6 +63,7 @@ function GadgetStore(){
         //     cartItem: new CartItem(product, 1)
         // })
         dispatch(createAddToCartAction(new CartItem(product, 1)));
+        setOpenSnackbar(true);
     }
 
     function renderProducts() {
@@ -85,6 +93,14 @@ function GadgetStore(){
         <div>
             <h3>Gadget Store</h3>
             {renderProducts()}
+            <div>
+            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
+                    <Alert variant='filled' onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                        Added To Cart
+                    </Alert>
+            </Snackbar>
+            </div>
+
         </div>
     )
 }

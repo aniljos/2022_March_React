@@ -9,6 +9,10 @@ import DevicesIcon from '@mui/icons-material/Devices';
 import ViewCart from "../components/gadgets/ViewCart";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Login from "../components/auth/Login";
+import ErrorBoundaryDemo from "../components/ErrorBoundaryDemo";
+import ErrorIcon from '@mui/icons-material/Error';
+import HooksDemo from "../components/HooksDemo";
+import WebhookIcon from '@mui/icons-material/Webhook';
 
 export interface AppRoute{
 
@@ -57,7 +61,7 @@ export const appRoutes : Array<AppRoute> = [
         name: "Gadgets",
         path: "/gadgets",
         component: GadgetStore,
-        secure: false,
+        secure: true,
         menu: true,
         icon: DevicesIcon
     },
@@ -66,7 +70,7 @@ export const appRoutes : Array<AppRoute> = [
         name: "ViewCart",
         path: "/cart",
         component: ViewCart,
-        secure: false,
+        secure: true,
         menu: true,
         icon: ShoppingCartIcon
     },
@@ -78,6 +82,24 @@ export const appRoutes : Array<AppRoute> = [
         secure: false,
         menu: false
     },
+    {
+        id: 7,
+        name: "Error Boundary",
+        path: "/error",
+        component: ErrorBoundaryDemo,
+        secure: false,
+        menu: true,
+        icon: ErrorIcon
+    },
+    {
+        id: 9,
+        name: "Hooks Demo",
+        path: "/hooks",
+        component: HooksDemo,
+        secure: false,
+        menu: true,
+        icon: WebhookIcon
+    }
 
 
 ]
