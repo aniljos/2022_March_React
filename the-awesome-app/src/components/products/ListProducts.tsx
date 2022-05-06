@@ -1,12 +1,16 @@
 import React, { Component, PureComponent } from 'react';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { Product } from '../../models/Product';
 import "./ListProducts.css";
 import EditProduct from './EditProduct';
+import {connect} from 'react-redux';
+import { AppDispatch, AppState } from '../../redux/store';
+import { AuthState } from '../../redux/authReducer';
 
 
 interface ListProductsProps{
-
+    auth: AuthState,
+    updateAccessToken: (token: string) => void
 }
 
 interface ListProductsState{
@@ -22,18 +26,23 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
         products: [],
         selectedProduct : null
     }
+    url: string = "";
 
     editProductRef = React.createRef<EditProduct>();
 
     constructor(props: ListProductsProps){
         super(props);
         console.log("[ListProducts] constructor");
+        if(process.env.REACT_APP_PRODUCTS_URL){
+            this.url = process.env.REACT_APP_PRODUCTS_URL ;
+        }
+        
     }
 
     async componentDidMount(){
 
         console.log("[ListProducts] componentDidMount");
-        const url = "http://localhost:9000/products";
+        //const url = "http://localhost:9000/products";
         // var promise = axios.get(url);
         // //promise.then(successCallback, errorCallback)
         // promise.then((response) => {
@@ -42,29 +51,64 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
         //     console.log("error", error);
         // });
 
+        
+        this.fetchProducts();
+
+       
+    }
+
+
+    async fetchProducts(){
+
+
         //async-await => ES7 
         // Works on promises
         // write async operation code in a sync-style
-
         try {
             //response resolved from the promise(success)
-            const response = await axios.get<Array<Product>>(url);
+
+            // const config: AxiosRequestConfig = {
+            //     headers: {
+            //         Authorization : "Bearer " + this.props.auth.accessToken
+            //     }
+            // }
+            //const response = await axios.get<Array<Product>>(this.url, config);
+
+            
+            const response = await axios.get<Array<Product>>(this.url);
             //console.log("success", response);
             const allProducts = response.data;
             this.setState({
                 products: allProducts
             });
 
-        } catch (error) {
+        } catch (error: any) {
             
-            //error resolved from the promise(failed)
             console.log("error", error);
+            if(error && error.response && error.response.status === 403){
+
+                try {
+                    const refreshUrl = "http://localhost:9000/refreshToken";
+                    const refreshResponse 
+                        = await axios.post(refreshUrl, {token: this.props.auth.refreshToken})
+                    const newAccessToken = refreshResponse.data.accessToken;
+                    this.props.updateAccessToken(newAccessToken);
+                    this.fetchProducts();
+
+
+                } catch (error) {
+                    console.log("refresh token error", error);
+                }
+            }
+            //error resolved from the promise(failed)
+            
         }
+
     }
 
     deleteProduct = async (product: Product, index: number) => {
 
-        const url = "http://localhost:9000/products/" + product.id;
+        const url = this.url + "/" + product.id;
 
         try {
             
@@ -104,7 +148,7 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
     editUpdate = async (updatedProduct: Product) => {
         console.log("ListProducts updatedProduct", updatedProduct);
 
-        const url = "http://localhost:9000/products/" + updatedProduct.id;
+        const url = this.url + "/" + updatedProduct.id;
         try {
             
             const response = await axios.put(url, updatedProduct);
@@ -206,4 +250,20 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
 
 }
 
-export default ListProducts;
+const mapStateToProps = (state: AppState) => {
+    return {
+        auth: state.auth
+    }
+}
+
+const mapDispatchToProps = (dispatch: AppDispatch)=> {
+    return {
+
+        updateAccessToken: (token: string) => {dispatch({type: "UPDATE_ACCESS_TOKEN", token: token})}
+        
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListProducts);
+//export default ListProducts;

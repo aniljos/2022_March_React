@@ -1,5 +1,5 @@
 
-interface AuthState {
+export interface AuthState {
     isAuthenticated:boolean;
     userName: string;
     accessToken: string;
@@ -7,7 +7,8 @@ interface AuthState {
 }
 interface AuthAction{
     type:string,
-    payload: AuthState
+    payload: AuthState,
+    token?: string
 }
 const initData : AuthState = {
     isAuthenticated:false,
@@ -20,11 +21,25 @@ const initData : AuthState = {
 export const authReducer = (state=initData, action: AuthAction) => {
 
     if(action.type === "SET_AUTH"){
-        // return {
-        //     ...action.payload
-        // }
+        return {
+            
+            ...action.payload
+        }
 
-        state = {...action.payload};
+        // state = {
+        //     ...action.payload
+        // };
+    }
+
+    if(action.type === "UPDATE_ACCESS_TOKEN"){
+
+        if(action.token){
+            return{
+                ...state,
+                accessToken: action.token
+            }
+        }
+        
     }
     return state;
 }

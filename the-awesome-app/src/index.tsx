@@ -9,7 +9,7 @@ import { AppThemeContext, ThemeState } from "./context/AppThemeContext";
 import AppThemeProvider from "./context/AppThemeProvider";
 import AppErrorBoundary from "./components/errorBoundary/AppErrorBoundary";
 import MuiApp from "./MuiApp";
-
+import './axios/interceptor';
 
 const theme: ThemeState = {
   mode: "light",
