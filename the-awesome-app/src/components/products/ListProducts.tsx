@@ -173,7 +173,7 @@ class ListProducts extends Component<ListProductsProps, ListProductsState>{
         const result =  this.state.products.map((item, index)=> {
 
             return (
-                <div key={item.id}  className='product'>
+                <div data-testid="product" key={item.id}  className='product'>
                     <p>Id: {item.id}</p>
                     <p>Name: {item.name}</p>
                     <p>Price: {item.price}</p>

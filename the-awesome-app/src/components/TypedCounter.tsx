@@ -102,6 +102,7 @@ class Counter extends Component<CounterProps, CounterState> {
             type="number"
             value={this.state.count}
              onChange={this.change}
+             placeholder="Enter the count"
           />
         </div>
         <div>
